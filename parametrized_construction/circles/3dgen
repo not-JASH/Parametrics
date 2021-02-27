@@ -1,0 +1,48 @@
+projectdir = "C:\project_data\parametrized_construction\circles"
+from os.path import join 
+from os import getcwd as pwd, chdir as cd
+cd(projectdir)
+from numpy.random import rand
+from numpy import array,zeros
+import sys,bpy,csv
+sys.path.append(".")
+from classes import vertsurf,horsurf,room
+from circles import circlefun,areafun,bridgefun
+
+'''
+no_hubs = 7
+dims = [50,50]
+minsize = 4.5
+randrange = 4
+
+
+
+params = array([randrange,minsize,dims[0],dims[1],no_hubs])
+hubs,center = circlefun(params)
+hub_areas,connections,angles = areafun(hubs)
+bridged_connections = bridgefun(connections,hub_areas,connections)
+'''
+std_height = 3
+corners = zeros((4,3))
+rooms = []
+lvls = 2
+
+for levels in range(lvls):
+    filename = join(projectdir,'coordinates_lv'+str(levels)+'.txt')
+    vshift = levels*std_height
+    print(vshift)
+    file = open(filename,'r')
+    for line in file: 
+        temp = line.split(",")
+        for i in range(4):
+            corners[i,[0,1]] = array([float(temp[2*i]),float(temp[2*i+1])])
+        newroom = room(corners,std_height)
+        newroom.show(h=vshift)
+    #rooms.append(newroom)
+    file.close()
+
+
+
+
+
+
